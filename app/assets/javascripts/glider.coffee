@@ -54,8 +54,10 @@ gliderModule.directive 'slider', ['$document', ($document) ->
     value: "="
     min: "&"
     max: "&"
+    values: "&"
 
   link: (scope, element, attrs) ->
+    scope.parsedValues = scope.values().split(',').map((el) -> parseInt(el)) if scope.values? && scope.values()?
 
     bound = (value, min, max) ->
       Math.min(Math.max(min, value), max)
@@ -85,13 +87,19 @@ gliderModule.directive 'slider', ['$document', ($document) ->
     scope.value = scope.min() unless scope.value?
 
     refreshHandle = ->
-      range = scope.max() - scope.min()
-      if range is 0
-        scope.xPosition = 0
+      if scope.parsedValues?
+        range = scope.parsedValues.length
+        value_index = scope.parsedValues.indexOf parseInt(scope.value)
+        scope.xPosition = value_index / range * 100
+        scope.xPosition = Math.min(Math.max(0, scope.xPosition), 100)
       else
-        scope.xPosition = (scope.value - scope.min()) / range * 100
-        scope.xPosition = bound(scope.xPosition, 0, 100)
-      scope.handleValue = scope.value if scope.showValueInHandle
+        range = scope.max() - scope.min()
+        if range is 0
+          scope.xPosition = 0
+        else
+          scope.xPosition = (scope.value - scope.min()) / range * 100
+          scope.xPosition = bound(scope.xPosition, 0, 100)
+        scope.handleValue = scope.value if scope.showValueInHandle
 
     snap = ->
       if scope.increments
@@ -102,10 +110,24 @@ gliderModule.directive 'slider', ['$document', ($document) ->
             minDiff = diff
             closestValue = snapValue
         scope.value = closestValue if isFinite(closestValue)
+
+      if scope.parsedValues
+        minDiff = Infinity
+        for value in scope.parsedValues
+          diff = Math.abs(value - scope.value)
+          if diff < minDiff
+            minDiff = diff
+            closestValue = value
+        scope.value = closestValue if isFinite(closestValue)
+
       refreshHandle()
 
     valueFromPosition = ->
-      Math.round((((scope.max() - scope.min()) * (scope.xPosition / 100)) + scope.min()) / step) * step
+      if scope.parsedValues?
+        index = Math.round((scope.parsedValues.length * scope.xPosition / 100) / step) * step
+        scope.parsedValues[index]
+      else
+        Math.round((((scope.max() - scope.min()) * (scope.xPosition / 100)) + scope.min()) / step) * step
 
     scope.$watch 'min()', (minValue) ->
       parseIncrements()
@@ -140,8 +162,22 @@ gliderModule.directive 'slider', ['$document', ($document) ->
           (sv for sv in scope.snapValues when sv < scope.value).reverse()[0]
         scope.value = newVal if newVal?
 
+      doValueStep = (steps) ->
+        index = if steps > 0
+          _.findIndex scope.parsedValues, (el) ->
+            el >= scope.value
+        else
+          _.findLastIndex scope.parsedValues, (el) ->
+            el <= scope.value
+
+        index = 0 if index == -1
+        newVal = scope.parsedValues[ Math.min(index + steps, scope.parsedValues.length-1) ]
+        scope.value = newVal if newVal?
+
       if attrs.increments?
         doIncrement steps
+      else if scope.values?
+        doValueStep steps
       else
         doStep steps
 
