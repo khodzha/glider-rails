@@ -176,7 +176,7 @@ gliderModule.directive 'slider', ['$document', ($document) ->
 
       if attrs.increments?
         doIncrement steps
-      else if scope.values?
+      else if scope.parsedValues?
         doValueStep steps
       else
         doStep steps

@@ -233,7 +233,7 @@
             };
             if (attrs.increments != null) {
               return doIncrement(steps);
-            } else if (scope.values != null) {
+            } else if (scope.parsedValues != null) {
               return doValueStep(steps);
             } else {
               return doStep(steps);
