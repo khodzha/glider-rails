@@ -91,9 +91,11 @@
             var range, value_index;
             if (scope.parsedValues != null) {
               range = scope.parsedValues.length;
-              value_index = scope.parsedValues.indexOf(parseInt(scope.value));
+              value_index = _.findIndex(scope.parsedValues, function(el) {
+                return el >= parseInt(scope.value);
+              });
               scope.xPosition = value_index / range * 100;
-              return scope.xPosition = Math.min(Math.max(0, scope.xPosition), 100);
+              return scope.xPosition = bound(scope.xPosition, 0, 100);
             } else {
               range = scope.max() - scope.min();
               if (range === 0) {
