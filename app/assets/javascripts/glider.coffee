@@ -89,9 +89,10 @@ gliderModule.directive 'slider', ['$document', ($document) ->
     refreshHandle = ->
       if scope.parsedValues?
         range = scope.parsedValues.length
-        value_index = scope.parsedValues.indexOf parseInt(scope.value)
+        value_index = _.findIndex scope.parsedValues, (el) ->
+          el >= parseInt(scope.value)
         scope.xPosition = value_index / range * 100
-        scope.xPosition = Math.min(Math.max(0, scope.xPosition), 100)
+        scope.xPosition = bound scope.xPosition, 0, 100
       else
         range = scope.max() - scope.min()
         if range is 0
