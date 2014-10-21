@@ -233,6 +233,9 @@
                 return scope.value = newVal;
               }
             };
+            if (attrs.disabled) {
+              return;
+            }
             if (attrs.increments != null) {
               return doIncrement(steps);
             } else if (scope.parsedValues != null) {
@@ -243,6 +246,10 @@
           };
           scope.sliderClick = function($event) {
             var offsetX, _ref, _ref1;
+            window.rr = attrs;
+            if (attrs.disabled) {
+              return;
+            }
             if (angular.element($event.target).hasClass('handle')) {
               return;
             }
@@ -253,6 +260,10 @@
           };
           startPointX = null;
           scope.handleMouseDown = function($event) {
+            window.rr = attrs;
+            if (attrs.disabled) {
+              return;
+            }
             if (!angular.element($event.target).hasClass('handle')) {
               return;
             }

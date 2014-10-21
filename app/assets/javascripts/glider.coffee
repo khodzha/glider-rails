@@ -175,6 +175,7 @@ gliderModule.directive 'slider', ['$document', ($document) ->
         newVal = scope.parsedValues[ Math.min(index + steps, scope.parsedValues.length-1) ]
         scope.value = newVal if newVal?
 
+      return if attrs.disabled
       if attrs.increments?
         doIncrement steps
       else if scope.parsedValues?
@@ -183,6 +184,8 @@ gliderModule.directive 'slider', ['$document', ($document) ->
         doStep steps
 
     scope.sliderClick = ($event) ->
+      window.rr = attrs
+      return if attrs.disabled
       return if angular.element($event.target).hasClass('handle')
       offsetX = $event.layerX ? $event.originalEvent?.layerX
       scope.xPosition = offsetX / sliderElement.offsetWidth * 100
@@ -192,6 +195,8 @@ gliderModule.directive 'slider', ['$document', ($document) ->
     startPointX = null
 
     scope.handleMouseDown = ($event) ->
+      window.rr = attrs
+      return if attrs.disabled
       return unless angular.element($event.target).hasClass('handle')
       startPointX = $event.pageX
       dragging = true
