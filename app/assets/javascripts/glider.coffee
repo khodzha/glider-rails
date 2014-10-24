@@ -88,7 +88,7 @@ gliderModule.directive 'slider', ['$document', ($document) ->
 
     refreshHandle = ->
       if scope.parsedValues?
-        range = scope.parsedValues.length
+        range = scope.parsedValues.length - 1
         value_index = _.findIndex scope.parsedValues, (el) ->
           el >= parseInt(scope.value)
         scope.xPosition = value_index / range * 100
@@ -125,7 +125,7 @@ gliderModule.directive 'slider', ['$document', ($document) ->
 
     valueFromPosition = ->
       if scope.parsedValues?
-        index = Math.round((scope.parsedValues.length * scope.xPosition / 100) / step) * step
+        index = Math.round(((scope.parsedValues.length-1) * scope.xPosition / 100) / step) * step
         scope.parsedValues[index]
       else
         Math.round((((scope.max() - scope.min()) * (scope.xPosition / 100)) + scope.min()) / step) * step

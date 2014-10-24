@@ -90,7 +90,7 @@
           refreshHandle = function() {
             var range, value_index;
             if (scope.parsedValues != null) {
-              range = scope.parsedValues.length;
+              range = scope.parsedValues.length - 1;
               value_index = _.findIndex(scope.parsedValues, function(el) {
                 return el >= parseInt(scope.value);
               });
@@ -146,7 +146,7 @@
           valueFromPosition = function() {
             var index;
             if (scope.parsedValues != null) {
-              index = Math.round((scope.parsedValues.length * scope.xPosition / 100) / step) * step;
+              index = Math.round(((scope.parsedValues.length - 1) * scope.xPosition / 100) / step) * step;
               return scope.parsedValues[index];
             } else {
               return Math.round((((scope.max() - scope.min()) * (scope.xPosition / 100)) + scope.min()) / step) * step;
