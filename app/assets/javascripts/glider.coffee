@@ -34,11 +34,11 @@ gliderModule.directive 'slider', ['$document', ($document) ->
             </span>
             <span class="side dec">
             <span class="button" ng-click="step(-1)">-</span>
-            <span class="bound-value">{{min() | intersperse}}</span>
+            <span class="bound-value">{{ minlabel(value) || (min() | intersperse) }}</span>
             </span>
             <span class="side inc">
             <span class="button" ng-click="step(+1)">+</span>
-            <span class="bound-value">{{max() | intersperse}}</span>
+            <span class="bound-value">{{ maxlabel(value) || (max() | intersperse) }}</span>
             </span>
             <span class="increments">
             <span ng-repeat="i in increments" class="i" ng-style="{left: i.offset+'%'}">
@@ -53,7 +53,9 @@ gliderModule.directive 'slider', ['$document', ($document) ->
   scope:
     value: "="
     min: "&"
+    minlabel: "="
     max: "&"
+    maxlabel: "="
     values: "&"
 
   link: (scope, element, attrs) ->
