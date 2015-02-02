@@ -186,7 +186,7 @@
             var doIncrement, doStep, doValueStep;
             doStep = function(steps) {
               var newValue;
-              newValue = scope.value + steps * step;
+              newValue = +scope.value + steps * step;
               if ((scope.min() <= newValue && newValue <= scope.max())) {
                 return scope.value = newValue;
               }

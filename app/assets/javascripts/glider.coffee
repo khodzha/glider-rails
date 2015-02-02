@@ -154,7 +154,7 @@ gliderModule.directive 'slider', ['$document', ($document) ->
 
     scope.step = (steps) ->
       doStep = (steps)->
-        newValue = scope.value + steps * step
+        newValue = +scope.value + steps * step
         if scope.min() <= newValue <= scope.max()
           scope.value = newValue
 
