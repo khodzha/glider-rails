@@ -201,6 +201,7 @@ gliderModule.directive 'slider', ['$document', ($document) ->
       return if attrs.disabled
       return unless angular.element($event.target).hasClass('handle')
       startPointX = $event.pageX
+      $('html').addClass('noselect')
       dragging = true
 
     $document.on 'mousemove', ($event) ->
@@ -221,6 +222,7 @@ gliderModule.directive 'slider', ['$document', ($document) ->
       return  unless dragging
       scope.value = valueFromPosition() if deferUpdate
       snap()
+      $('html').removeClass('noselect')
       scope.$apply()
       dragging = false
 ]

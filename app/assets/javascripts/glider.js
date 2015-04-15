@@ -270,6 +270,7 @@
               return;
             }
             startPointX = $event.pageX;
+            $('html').addClass('noselect');
             return dragging = true;
           };
           $document.on('mousemove', function($event) {
@@ -302,6 +303,7 @@
               scope.value = valueFromPosition();
             }
             snap();
+            $('html').removeClass('noselect');
             scope.$apply();
             return dragging = false;
           });
